@@ -88,8 +88,20 @@ public class NumberTriangle {
      *
      */
     public int retrieve(String path) {
-        // TODO implement this method
-        return -1;
+        // Initialize current root node (to be updated when traversing)
+        NumberTriangle current = this;
+
+        // Loop through path and raverse NumberTriangle
+        for (char c : path.toCharArray()) {
+            if (c == 'l') {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+        }
+
+        // Return root value
+        return current.root;
     }
 
     /** Read in the NumberTriangle structure from a file.
