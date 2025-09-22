@@ -109,8 +109,8 @@ public class NumberTriangle {
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
-
-        // TODO define any variables that you want to use to store things
+        // Define any variables that you want to use to store things
+        NumberTriangle prev[] = new NumberTriangle[0];
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
@@ -122,7 +122,27 @@ public class NumberTriangle {
             // remove when done; this line is included so running starter code prints the contents of the file
             System.out.println(line);
 
-            // TODO process the line
+            // Process the line
+            String split[] = line.split(" ");
+            NumberTriangle current[] = new NumberTriangle[split.length];   
+            
+            // Create new NumberTriangle objects for each number in the row
+            for (int i = 0; i < split.length; i++)
+                current[i] = new NumberTriangle(Integer.parseInt(split[i]));
+
+            // Special case: if it's the first line, then set top to be the only NumberTriangle object
+            if (split.length == 1)
+                top = current[0];
+            
+            // Link previous NumberTriangle row to current one by setting children accordingly
+            assert(prev.length + 1 == current.length); // each row has one more element than the previous
+            for (int i = 0; i < prev.length; i++) {
+                prev[i].setLeft(current[i]);
+                prev[i].setRight(current[i+1]);
+            }
+
+            // Update previous NumberTriangle row to be current one to prepare for next iteration
+            prev = current;
 
             //read the next line
             line = br.readLine();
@@ -132,8 +152,8 @@ public class NumberTriangle {
     }
 
     public static void main(String[] args) throws IOException {
-
-        NumberTriangle mt = NumberTriangle.loadTriangle("input_tree.txt");
+        // Ensure relative import path is valid
+        NumberTriangle mt = NumberTriangle.loadTriangle("resources/input_tree.txt");
 
         // [not for credit]
         // you can implement NumberTriangle's maxPathSum method if you want to try to solve
